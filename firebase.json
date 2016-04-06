@@ -1,0 +1,5 @@
+{
+  "firebase": "austwits",
+  "public": "www",
+  "rules": "rules.json"
+}
