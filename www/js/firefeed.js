@@ -11,6 +11,10 @@
  *                                   (Useful for testing only)
  * @return   {Firefeed}
  */
+
+
+
+
 function Firefeed(baseURL, newContext) {
   var self = this;
   this._name = null;
