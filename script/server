@@ -1,3 +1,0 @@
-#!/bin/bash
-
-bundle exec heel -p 3000 --no-launch-browser -r www/

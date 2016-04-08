@@ -1,0 +1,46 @@
+<div class="container">
+<div class='container-fluid' ng-controller="stockController">
+    <div class='row' id="portfoliostocks">
+        <div class='col-md-12' >
+            Current User: {{user.username}}
+        </div>
+    </div>
+    <div ng-repeat="stock in user.stocks">{{stock.ticker}}</div>
+
+    <!--this is the search and stock panel-->
+    <div class='row'>
+        Search: <input ng-model="query">
+        {{user.stocks}}
+        <table class="'table table-hover table-responsive">
+            <thead class="thead-inverse">
+            <tr>
+                <th class="col-md-1" >Follow</th>
+                <th class="col-md-1" >Ticker</th>
+                <th class="col-md-5">Name</th>
+                <th class="col-md-3">Sector</th>
+                <th class="col-md-1">Price</th>
+                <th class="col-md-1">PE</th>
+            </tr>
+            </thead>
+
+            <tr ng-repeat='stock in stocks |filter:query'>
+                <p>
+                <td>
+                    <button type="button" class="btn btn-default" ng-click="follow(stock)" ng-if="!isFollowing(stock)">Follow
+                    </button> 
+                    <button type="button" ng-if="isFollowing(stock)" class="btn btn-default" ng-click="unfollow(stock)">Following
+                    </button>
+                </td>
+                <td>{{stock.ticker}}</td>
+                <td>{{stock.name}}</td>
+                <td>{{stock.sector}}</td>
+                <td>{{stock.price}}</td>
+                <td>{{stock.PE}}</td>
+                <td>{{stock.display}}</td></p>
+             <!--   {{"https://www.quandl.com/api/v3/datasets/YAHOO/"+{{stock.yahoo}}".json?api_key=1C5SvTESp7rUGJMsW1iV"}}-->
+            </tr>
+        </table>
+    </div>
+
+</div>
+</div>
