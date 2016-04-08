@@ -21,10 +21,6 @@ var app = angular.module('austwits', ['ngRoute', 'ngResource']);//.run(function(
 				templateUrl: 'register.html',
 				controller: 'authController'
 			})
-			.when('/strategy', {
-				templateUrl: '/strategy.html',
-				controller: 'mainController'
-			})
 			.when('/stream',{
 				templateUrl:'/stream.html',
 				controller: 'mainController'
@@ -33,10 +29,6 @@ var app = angular.module('austwits', ['ngRoute', 'ngResource']);//.run(function(
                 templateUrl:'/myportfolio.html',
                 controller: 'mainController'
             })
-			.when('/ideas', {
-				templateUrl: '/ideas.html',
-				controller: 'mainController'
-			});
 	});
 
 	app.factory('postService', function($resource){
