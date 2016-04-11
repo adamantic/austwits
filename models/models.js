@@ -4,7 +4,8 @@ var Schema = mongoose.Schema;
 var postSchema = new mongoose.Schema({
 	created_by: String,		//should be changed to ObjectId, ref "User" (Romain)
 	created_at: {type: Date, default: Date.now},
-	text: String
+	text: String,
+	tags:[String]
 });
 
 var userSchema = new mongoose.Schema({

@@ -29,23 +29,66 @@ var app = angular.module('austwits', ['ngRoute', 'ngResource']);//.run(function(
                 templateUrl:'/myportfolio.html',
                 controller: 'mainController'
             })
+            .when('/tags/:tagId',{
+            	templateUrl: '/tag.html',
+            	controller: 'tagController'
+            })
 	});
+	app.controller('tagController',function($routeParams,$http,$log,$scope,$sce){
+		$scope.tagName = $routeParams.tagId;
 
+
+		$http
+			.post('/api/posts/tag',{tag: $scope.tagName})
+			.then(function(response){
+				$scope.postsWithTag = response.data;
+				$scope.postsWithTag.forEach(function(post){
+					post.text = $sce.trustAsHtml(post.text);
+				})
+			},function(err){	
+				$log.error("Error getting post with specified tag")
+			})
+	})
 	app.factory('postService', function($resource){
 		return $resource('/api/posts/:id');
 	});
 
-	app.controller('mainController', function($scope, $rootScope, postService, loginService){
+	app.controller('mainController', function($scope, $rootScope, postService, loginService,$sce){
 		$scope.signout = loginService.signout;
 		$scope.user = loginService.user;
-		$scope.posts = postService.query();
+		postService.query(function(response){
+			$scope.posts = response;
+			$scope.posts.forEach(function(post){
+				post.text = $sce.trustAsHtml(post.text);
+			})
+		});
 		$scope.newPost = {created_by: '', text: '', created_at: ''};
 	
 		$scope.post = function() {
 		  $scope.newPost.created_by = $rootScope.current_user;
 		  $scope.newPost.created_at = Date.now();
+
+		  var a = $scope.newPost.text;
+		  var final = a;
+		  //check here for tags
+		  var pattern = /\$[A-Z]*\b/gi;
+		  var allTags =[]
+			while((match = pattern.exec(a))!== null){
+			        var replacement = '<a href="#/tags/'+match[0].substring(1)+'">'+match[0]+'</a>';
+			        var subparts = final.split(match[0]);
+			        var final = subparts[0] + replacement + subparts[1];
+			        allTags.push(match[0].substring(1));
+			}
+
+		$scope.newPost.text = final;
+		$scope.newPost.tags = allTags;
 		  postService.save($scope.newPost, function(){
-		    $scope.posts = postService.query();
+		    $scope.posts = postService.query(function(response){
+					$scope.posts = response;
+					$scope.posts.forEach(function(post){
+						post.text = $sce.trustAsHtml(post.text);
+					})
+				});
 		    $scope.newPost = {created_by: '', text: '', created_at: ''};
 		  });
 		};

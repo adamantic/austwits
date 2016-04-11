@@ -21,8 +21,22 @@ function isAuthenticated (req, res, next) {
 	return res.redirect('/#login');
 };
 
+router.route('/posts/tag')
+	.post(function(req,res){
+
+		var tagId = req.body.tag;
+		Post.find({tags: tagId}, function(err, posts){
+			if(err){
+				res.send(err);
+				return
+			}
+			res.json(posts);
+		});
+	})
+	
 //Register the authentication middleware
 router.use('/posts', isAuthenticated);
+
 
 router.route('/posts')
 	//creates a new post
@@ -31,6 +45,7 @@ router.route('/posts')
 		var post = new Post();
 		post.text = req.body.text;
 		post.created_by = req.body.created_by;
+		post.tags = req.body.tags;
 		post.save(function(err, post) {
 			if (err){
 				return res.send(500, err);

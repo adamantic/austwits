@@ -1,0 +1,17 @@
+<div class="container">
+<h1>
+	{{tagName}}
+</h1>
+
+<div id="post-stream">
+	<h4>Post witht the tag</h4>
+		<div class="post" ng-if="postsWithTag.length >0" ng-repeat="post in postsWithTag" ng-class-odd="'odd'" ng-class-even="'even'"> 
+			<p ng-bind-html="post.text"></p>
+			<small>Posted by @{{post.created_by}}</small>
+			<small class="pull-right">{{post.created_at | date:"h:mma 'on' MMM d, y"}}</small>
+		</div>
+		<div class="post" ng-if="postsWithTag.length ==0" ng-class-odd="'odd'" ng-class-even="'even'"> 
+			<p>No posts with the tag</p>
+		</div>
+</div>
+</div>
