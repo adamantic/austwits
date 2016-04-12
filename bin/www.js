@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-var debug = require('debug')('aussiealpha');
+var debug = require('debug')('austwits');
 var app = require('../app');
 
 app.set('port', process.env.PORT || 5000);
