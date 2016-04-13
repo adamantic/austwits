@@ -53,7 +53,7 @@ var app = angular.module('austwits', ['ngRoute', 'ngResource']);//.run(function(
 		return $resource('/api/posts/:id');
 	});
 
-	app.controller('mainController', function($scope, $rootScope, postService, loginService,$sce){
+	app.controller('mainController', function($scope, $rootScope, postService, loginService,$sce,stockService,$filter){
 		$scope.signout = loginService.signout;
 		$scope.user = loginService.user;
 		postService.query(function(response){
@@ -72,12 +72,18 @@ var app = angular.module('austwits', ['ngRoute', 'ngResource']);//.run(function(
 		  var final = a;
 		  //check here for tags
 		  var pattern = /\$[A-Z]*\b/gi;
-		  var allTags =[]
+		  var allTags =[];
+		  var stocks = stockService.getStocks();
 			while((match = pattern.exec(a))!== null){
-			        var replacement = '<a href="#/tags/'+match[0].substring(1)+'">'+match[0]+'</a>';
-			        var subparts = final.split(match[0]);
-			        var final = subparts[0] + replacement + subparts[1];
-			        allTags.push(match[0].substring(1));
+				//check if it exists instock.json
+				var isThere = false;
+				var stock = $filter('filter')(stocks,{ticker: match[0].substring(1)},true);
+					if(stock.length != 0){
+				        var replacement = '<a href="#/tags/'+match[0].substring(1)+'">'+match[0]+'</a>';
+				        var subparts = final.split(match[0]);
+				        var final = subparts[0] + replacement + subparts[1];
+				        allTags.push(match[0].substring(1));
+				    }
 			}
 
 		$scope.newPost.text = final;

@@ -19,8 +19,12 @@ angular.module('austwits').service('stockService',['$http',function($http){
 		return $http.post('/api/stock/unfollow',stock);
 	}
 
+	service.getStocks = function(stock){
+		return service.stocks;
+	}
 
-	//service.loadStocks(); //done only once when service is instantiated.
+
+	service.loadStocks(); //done only once when service is instantiated.
 
 	return service;
 }]);
